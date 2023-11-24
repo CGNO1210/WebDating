@@ -1,0 +1,97 @@
+<form [formGroup]="registerForm" (submit)="registerForm.valid && register()" autocomplete="off">
+    <h2 class="text-center text-primary">Sign up</h2>
+    <hr>
+
+    <div class="form-group">
+        <label style="margin-right: 10px;" for="">I am a: </label>
+        <input 
+            [class.is-invalid]='registerForm.get("gender")?.errors
+            && registerForm.get("gender")?.touched'
+            type="radio" formControlName="gender" value="male"
+        > Male
+        <input 
+            [class.is-invalid]='registerForm.get("gender")?.errors
+            && registerForm.get("gender")?.touched'
+            type="radio"  formControlName="gender" value="female"
+        > Female
+        <div class="invalid-feedback">Please enter a gender</div>
+    </div>
+
+    <div class="form-group mt-2">
+        <input 
+            [class.is-invalid]='registerForm.get("username")?.errors
+            && registerForm.get("username")?.touched'
+            type="text" class="form-control" formControlName="username" placeholder="Username"
+        >
+        <div class="invalid-feedback">Please enter a username</div>
+    </div>
+
+    <div class="form-group mt-2">
+        <input 
+            [class.is-invalid]='registerForm.get("knownAs")?.errors
+            && registerForm.get("knownAs")?.touched'
+            type="text" class="form-control" formControlName="knownAs" placeholder="KnownAs"
+        >
+        <div class="invalid-feedback">Please enter a Know As</div>
+    </div>
+
+    <app-date-input [formControl]="$any(registerForm.controls['dateOfBirth'])"
+        [label]='"Date Of Birth"' [maxDate]="maxDate"></app-date-input>
+    
+    <div class="form-group mt-2">
+        <input 
+            [class.is-invalid]='registerForm.get("city")?.errors
+            && registerForm.get("city")?.touched'
+            type="text" class="form-control" formControlName="city" placeholder="City"
+        >
+        <div class="invalid-feedback">Please enter a city</div>
+    </div>
+    
+    <div class="form-group mt-2">
+        <input 
+            [class.is-invalid]='registerForm.get("country")?.errors
+            && registerForm.get("country")?.touched'
+            type="text" class="form-control" formControlName="country" placeholder="Country"
+        >
+        <div class="invalid-feedback">Please enter a country</div>
+    </div>
+    
+    <div class="form-group mt-2">
+        <input
+            [class.is-invalid]='registerForm.get("password")?.errors
+                && registerForm.get("password")?.touched'
+            type="password" class="form-control" formControlName="password" placeholder="Password"
+        >
+        <div *ngIf="registerForm.get('password')?.hasError('required')" 
+            class="invalid-feedback">Please enter a password</div>
+        <div *ngIf="registerForm.get('password')?.hasError('minlength')" 
+            class="invalid-feedback">Password must be at least 4 character</div>
+        <div *ngIf="registerForm.get('password')?.hasError('maxlength')" 
+            class="invalid-feedback">Password must be at most 8 character</div>
+    </div>
+    <div class="form-group mt-2">
+        <input 
+            [class.is-invalid]='registerForm.get("confirmPassword")?.errors
+            && registerForm.get("confirmPassword")?.touched'
+            
+            type="password" class="form-control" formControlName="confirmPassword" placeholder="confirmPassword">
+        <div *ngIf="registerForm.get('confirmPassword')?.hasError('required')" 
+            class="invalid-feedback">Please enter a confirm password</div>
+        <div *ngIf="registerForm.get('confirmPassword')?.hasError" 
+            class="invalid-feedback">Confirm assword must match password</div>
+    </div>
+
+    <div class="row mt-2" *ngIf="validationErrors.length > 0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">{{error}}</li>
+        </ul>
+    </div>
+
+    <div class="form-group text-center mt-3">
+        <button [disabled]="!registerForm.valid" style="margin-right: 8px;" class="btn btn-success mr-2" type="submit">Register</button>
+        <button class="btn btn-warning mr-2" (click)="cancel()" type="button">Cancel</button>
+    </div>
+</form>
+
+<p>Form value: {{registerForm.value |json}}</p>
+<p>Form status: {{registerForm.status |json}}</p>
